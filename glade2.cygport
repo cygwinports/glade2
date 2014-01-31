@@ -1,0 +1,31 @@
+ORIG_PN="glade"
+inherit gnome2
+
+NAME="glade2"
+VERSION=2.12.2
+RELEASE=2
+CATEGORY="Devel"
+SUMMARY="Legacy GUI builder for GTK and GNOME 2.x"
+DESCRIPTION="Glade is a free user interface builder for GTK+ and GNOME. The
+user interfaces designed in Glade are saved as XML, and by using the libglade
+library these can be loaded by applications dynamically as needed.  This
+version of Glade is provided for compatibility with legacy code, particularly
+those which use Glade to generate C code, a feature absent from later versions."
+
+PATCH_URI="
+	fedora/gnome-i18n.patch
+	fedora/gtk-includes.patch
+	fedora/glade-2.12.2-format-security.patch
+	2.12.2-desktop-entry.patch
+	2.12.2-doc-install.patch
+"
+
+CYGPORT_USE_UNSTABLE_API=1
+src_unpack_hook() {
+	mv -f po/sr@Latn.po po/sr@latin.po
+	sed -i 's|sr@Latn|sr@latin|g' po/LINGUAS
+}
+
+CYGCONF_ARGS="--enable-gnome --disable-gnome-db"
+
+USE_COMMON_DOC_BUILD=yes

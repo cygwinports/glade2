@@ -1,0 +1,44 @@
+--- origsrc/glade-2.12.2/doc/xmldocs.make	2007-12-08 16:56:04.000000000 -0600
++++ src/glade-2.12.2/doc/xmldocs.make	2014-01-31 01:35:47.172883100 -0600
+@@ -39,7 +39,7 @@ docdir = $(datadir)/gnome/help/$(appid)/
+ 
+ xml_files = $(entities) $(docname).xml
+ 
+-omf_dir=$(top_srcdir)/omf-install
++omf_dir=$(top_builddir)/omf-install
+ 
+ EXTRA_DIST = $(xml_files) $(omffile) $(figs)
+ 
+@@ -51,7 +51,7 @@ omf: omf_timestamp
+ 
+ omf_timestamp: $(omffile)
+ 	-for file in $(omffile); do \
+-	  scrollkeeper-preinstall $(docdir)/`awk 'BEGIN {RS = ">" } /identifier/ {print $$0}' $${file} | awk 'BEGIN {FS="\""} /url/ {print $$2}'` $${file} $(omf_dir)/$${file}; \
++	  scrollkeeper-preinstall $(docdir)/`awk 'BEGIN {RS = ">" } /identifier/ {print $$0}' $(srcdir)/$${file} | awk 'BEGIN {FS="\""} /url/ {print $$2}'` $(srcdir)/$${file} $(omf_dir)/$${file}; \
+ 	done
+ 	touch omf_timestamp
+ 
+@@ -68,7 +68,9 @@ app-dist-hook:
+ 
+ install-data-am: omf
+ 	-$(mkinstalldirs) $(DESTDIR)$(docdir)/figures
+-	-cp $(srcdir)/$(xml_files) $(DESTDIR)$(docdir)
++	-for file in $(xml_files); do \
++	  cp $(srcdir)/$$file $(DESTDIR)$(docdir); \
++	done
+ 	-for file in $(srcdir)/figures/*.png; do \
+ 	  basefile=`echo $$file | sed -e  's,^.*/,,'`; \
+ 	  $(INSTALL_DATA) $$file $(DESTDIR)$(docdir)/figures/$$basefile; \
+--- origsrc/glade-2.12.2/omf-install/Makefile.am	2007-12-08 16:56:02.000000000 -0600
++++ src/glade-2.12.2/omf-install/Makefile.am	2014-01-31 01:28:33.159058900 -0600
+@@ -19,8 +19,8 @@ scrollkeeper_localstate_dir = $(localsta
+ 
+ install-data-local:
+ 	$(mkinstalldirs) $(DESTDIR)$(omf_dest_dir)
+-	-for file in $(srcdir)/*.omf; do \
+-		$(INSTALL_DATA) $(srcdir)/$$file $(DESTDIR)$(omf_dest_dir); \
++	-for file in *.omf; do \
++		$(INSTALL_DATA) $$file $(DESTDIR)$(omf_dest_dir); \
+ 	done
+ 	-scrollkeeper-update -p $(scrollkeeper_localstate_dir) 
+ 

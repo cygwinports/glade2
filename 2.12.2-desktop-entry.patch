@@ -1,0 +1,14 @@
+--- origsrc/glade-2.12.2/glade-2.desktop.in	2007-12-08 16:56:10.000000000 -0600
++++ src/glade-2.12.2/glade-2.desktop.in	2014-01-31 00:19:47.330075000 -0600
+@@ -5,9 +5,9 @@ _Comment=Create or open user interface d
+ Exec=glade-2 %F
+ Terminal=false
+ Type=Application
+-Icon=glade-2.png
++Icon=glade-2
+ Categories=Application;Development;
+-MimeType=application/x-glade
++MimeType=application/x-glade;
+ X-GNOME-Bugzilla-Bugzilla=GNOME
+ X-GNOME-Bugzilla-Product=glade
+ X-GNOME-Bugzilla-Component=general
